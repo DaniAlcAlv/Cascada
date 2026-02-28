@@ -1,5 +1,5 @@
 """
-Water calibration browser with error detection and a calculator: Water Volume (uL) -> Solenoid open time (ms) if the valvolume is in the calibrated range.
+Water calibration browser with error detection and a calculator: Water Volume (uL) -> Solenoid open time (ms) if the volume is in the calibrated range.
 
 Goes through a directory with this layout:
     main_dir/
@@ -197,6 +197,7 @@ class WaterCalData:
         self._validate_folder_match()
         self._validate_interval_average_output()
         self._validate_regression()
+        self._validate_date()
 
     # ---------- Public Properties ----------
 
@@ -336,6 +337,46 @@ class WaterCalData:
         if folder_name != self._model.computer_name:
             self._warnings.add(
                 f"Computer mismatch: folder='{folder_name}' vs json='{self._model.computer_name}'"
+            )
+    
+    def _validate_date(self) -> None:
+        """Validate calibration recency: warn at 4 months, error at 6 months; error if future date."""
+        from datetime import datetime, timezone, timedelta
+        cal_dt = datetime.fromisoformat(self.date)
+        
+        if not self.date:
+            self._errors.add("Calibration date is missing; unable to validate recency.")
+            return
+        elif not cal_dt:
+            self._errors.add("Calibration date is has the wrong formatting (should be  ISO 8601)")            
+        
+        # Use tz-aware 'now' if cal_dt is tz-aware; otherwise use naive 'now'
+        if getattr(cal_dt, "tzinfo", None) is not None and cal_dt.tzinfo is not None:
+            current_dt = datetime.now(timezone.utc)
+            # Normalize both to UTC to avoid ambiguous comparisons
+            cal_dt_utc = cal_dt.astimezone(timezone.utc)
+            delta_time = current_dt - cal_dt_utc
+        else:
+            current_dt = datetime.now()
+            delta_time = current_dt - cal_dt
+
+        # Negative delta implies calibration date is in the future
+        if delta_time.total_seconds() < 0:
+            self._errors.add(
+                f"Calibration date is in the future: {cal_dt.isoformat()} > {current_dt.isoformat()}"
+            )
+            return
+
+        warn_period =  timedelta(days=120)  # ~4 months
+        error_period = timedelta(days=180)  # ~6 months
+
+        if delta_time > error_period:
+            self._errors.add(
+                f"Calibration date is too old: age={delta_time.days} > threshold ({error_period.days})."
+            )
+        elif delta_time > warn_period:
+            self._warnings.add(
+                f"Calibration date is getting old: age={delta_time.days} > threshold ({warn_period.days})."
             )
 
     def _validate_interval_average_output(self) -> None:
