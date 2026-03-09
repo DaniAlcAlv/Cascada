@@ -1,14 +1,14 @@
-# 🛠 Tool Summary
+# 🛠 CaSCaDA: Calibration and Spot Check and Dashboard Assitant
 
 A toolkit to load, validate, visualize, create, and update **Water Valve Calibrations** and **Spotchecks** used in VR foraging rigs.
 
 ## 🎯 Purpose
 - Display rig schemas, calibrations, and spotchecks  
 - Validate calibrations (regression, consistency, aging, bounds)  
-- Create **manual calibrations entries**  
+- Create and save **manual calibrations entries**  
 - Create and save **spotcheck entries**  
 - Update **rig schema JSON** from any WaterCal file  
-- Visualize performance trends and errors  
+
 
 ## 📁 Project Structure
 src/  
