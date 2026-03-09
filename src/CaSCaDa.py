@@ -1,4 +1,4 @@
-# To run> streamlit run src/WebGUI.py --server.port 8501 --server.address 0.0.0.0
+# To run> streamlit run src/CaSCaDa.py --server.port 8501 --server.address 0.0.0.0
 from __future__ import annotations
 
 import logging
