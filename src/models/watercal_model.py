@@ -97,12 +97,13 @@ class WaterValveCalibration(BaseModel):
     All data checks live here:
       - interval_average vs measurements (and valid_domain if provided)
       - regression recomputation & quality thresholds
-      - date recency
+      - date
 
     Also exposes:
-      - warnings, errors, recomputed_fit, different_recalculated_output
-      - convenience helpers (preferred_coefficients, check_bounds, calc...)
-      - **plot(...)** method (kept!)
+      - warnings, errors, recomputed_fit, different_recalculated_output, corrected_interval_average
+      - convenience helpers (preferred_coefficients, check_bounds, calc)
+      - **plot(...)** method 
+      - from_input and to_payload methods to create and to save a record
     """
     model_config = ConfigDict(extra="ignore")
 
@@ -159,7 +160,6 @@ class WaterValveCalibration(BaseModel):
         inp = self.input
         out = self.output
 
-
         # (A) valid_domain vs interval_average keys (if valid_domain provided)
         if out.valid_domain is not None:
             try:
@@ -204,7 +204,7 @@ class WaterValveCalibration(BaseModel):
 
 
         # (C) Regression recomputation & quality thresholds
-        xs, ys = map(list, zip(*sorted(out.interval_average.items())))
+        xs, ys = map(list, zip(*sorted(self.corrected_interval_average.items())))
         slope, offset, r2 = linear_regression(xs, ys)
         if slope is None or offset is None or r2 is None:
             self._error("Unable to compute regression (insufficient or invalid data).")
@@ -219,6 +219,12 @@ class WaterValveCalibration(BaseModel):
             slope_ok=slope_ok, offset_ok=offset_ok, r2_ok=r2_ok
         )
         self.different_recalculated_output = not (slope_ok and offset_ok and r2_ok)
+        if self.different_recalculated_output:
+            self._error(
+                f"The regression output is not correct. \n"
+                f"  Original:   slope {out.slope:.6f}    offset {out.offset:.6f}     R² {out.r2:.3f} \n"
+                f"  Recomputed: slope {slope:.6f}    offset {offset:.6f}     R² {r2:.3f} \n"
+                )
 
         if math.isfinite(r2):
             if r2 < self.MIN_R2:
