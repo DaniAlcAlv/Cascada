@@ -1,4 +1,4 @@
-# watercal_dataset.py (or your utility module)
+# watercal_dataset.py
 
 from __future__ import annotations
 
@@ -20,15 +20,16 @@ def write_corrected_water_calibration_without_recalc(
     rewrite: bool = False,
 ) -> Dict[str, Any]:
     """
-    Create (or update) a sibling 'corrected_water_calibration.json' next to the given
-    'water_calibration.json' WITHOUT recalculating anything.
+    Create (or update) a 'corrected_water_calibration.json' next to the given
+    'water_calibration.json' recalculating the output.
 
     A correction is written only if the record is "not OK":
       - record.different_recalculated_output == True, OR
-      - there exists an "Inconsistent interval_average ..." error.
+      - there is an "Inconsistent interval_average ..." error.
 
     The corrected file is a **bare** payload (no rig/computer fields).
     """
+
     p = Path(original_wc_path)
     report: Dict[str, Any] = {
         "file": str(p),
@@ -147,9 +148,7 @@ def write_corrected_for_all_without_recalc(root: Path | str, *, rewrite: bool = 
 
 if __name__ == "__main__":
     # Example CLI-ish invocation:
-    root = r"C:\Data\Water-cal"  # or take from sys.argv
-    results = write_corrected_for_all_without_recalc(root, rewrite=False)
+    root = r"C:\Data\water-cal-2026\water_calibration\automatic_water_calibration"  
+    results = write_corrected_for_all_without_recalc(root, rewrite=True)
     for r in results:
         print(r)
-
-
