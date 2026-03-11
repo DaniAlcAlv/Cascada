@@ -29,9 +29,9 @@ src/
 │   
 ├─ ui/      
 │   ├─ filters.py             # Sidebar filters  
-│   └─ record_block.py        # Shared calibration display UI  
+│   └─ blocks.py              # Streamlit expanders  
 │  
-├─ pages/                     # Streamlit pages 
+├─ subpages/                  # Streamlit pages 
 │   ├─ rig_dashboard.py  
 │   ├─ watercal_dashboard.py  
 │   ├─ spotcheck_dashboard.py  

@@ -9,15 +9,16 @@ from models.spotcheck_model import (
     save_spotcheck,
 )
 from models.watercal_dataset import WaterCalDataset
-from ui_helpers.record_block import fig_to_png
+from services.cache import fig_to_png
 from services.cache import record_plot_fingerprint
 from config import OK_MARGIN, STRIKE_MARGIN
 
     
-def render_new_spotcheck(rig_ds:WaterCalDataset, spotcheck_path:Path, rig_filter:str):
+def render_new_spotcheck(rig_ds:WaterCalDataset, spotcheck_path:Path|str, rig_filter:str):
     # --- Step 0: Choose a rig (from sidebar filter) ---
     # Use the rig selected in the sidebar
     sel_rig = rig_filter
+    spotcheck_path = Path(spotcheck_path)
 
     col_rig, col_cal, col_plot = st.columns([1, 1, 1])
     with col_rig:

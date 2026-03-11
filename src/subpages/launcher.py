@@ -8,6 +8,7 @@ import pandas as pd #Only for Typehints
 
 from services.filesystem import find_repo_root
 from models.watercal_dataset import WaterCalDataset
+from ui_helpers.blocks import show_skipped_files
 
 def show_launcher(rig_ds: WaterCalDataset, wcal_ds: WaterCalDataset, spotcheck_df: pd.DataFrame, spotcheck_path:str, page_options: list) -> None:
     st.set_page_config(
@@ -22,55 +23,53 @@ def show_launcher(rig_ds: WaterCalDataset, wcal_ds: WaterCalDataset, spotcheck_d
     )
 
     # ---- Main title ----
-    st.title("💧 CaSCaDa")
+    st.title("CaSCaDa")
     st.write("Calibration and Spot Check assistance Dashboard")
+    st.divider()
 
     # ---- Access to other pages ----
+    st.write("Choose one of the following modules on the sidebar")
     col1, col2, col3 = st.columns(3, border=True) 
     with col1:
         st.markdown("#### 🛠️ Rig Schemas")
-        st.caption("View and update the calibration stored in the rig schema.")
-        # if st.button("Open Rig Dashboard"):
-        #     return page_options[0]
-            
+        st.caption("View and update the calibration data stored in the rig schema.")
+
     with col2:
-        st.markdown("#### 💧 Calibrations")
+        st.markdown("#### 💦 Calibrations")
         st.caption("Browse all calibration files, check regression quality.")
-        # if st.button("Open WaterCal Dashboard"):
-        #     return page_options[1]
+
     with col3:
-        st.markdown("#### 🔎 Spotchecks")
-        st.caption("Analyze drop performance.")
-        # if st.button("Open Spotcheck Dashboard"):
-        #     return page_options[2]
+        st.markdown("#### 💧 Spotchecks")
+        st.caption("Browse spot checks.")
+
 
     col11, col12 = st.columns(2, border=True)  
     with col11:
-        st.markdown("#### ✍️ Enter Calibration")
+        st.markdown("#### ✍️ Enter Manual Calibration")
         st.caption("Enter measurements to create and store a new calibration.")
-        # if st.button("Open Manual Calibration"):
-        #     return page_options[3]
+
     with col12:
-        st.markdown("#### ➕ New Spotcheck")
+        st.markdown("#### ➕ Enter new Spotcheck")
         st.caption("Compute OK/Strike/Fail and save a spotcheck entry.")
-        # if st.button("Open New Spotcheck"):
-        #     return page_options[4]
+
 
     # ---- Status summary ----
-    st.markdown("#### 📊 System Status Overview")
+    st.markdown("#### 📊 Data Successfully Loaded")
     path_cols = st.columns(3)
     with path_cols[0]:
         st.metric("Rig schemas", f"{len(rig_ds.records)} files")
-        st.caption(f"`{st.session_state.get('rig_dir')}`")
+        st.caption(f"`{rig_ds.main_dir}`")
 
     with path_cols[1]:
         st.metric("WaterCal calibrations", f"{len(wcal_ds.records)} files")
-        st.caption(f"`{st.session_state.get('wcal_dir')}`")
+        st.caption(f"`{wcal_ds.main_dir}`")
 
     with path_cols[2]:
         st.metric("Spotcheck records", f"{len(spotcheck_df)} files")
         st.caption(f"`{spotcheck_path}`")
 
+    # ---- Skipped files block ----
+    show_skipped_files(rig_ds, wcal_ds)
 
     # ---- About / version block ----
     with st.expander("ℹ️ About CaSCaDa", expanded=False):

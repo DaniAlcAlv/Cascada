@@ -4,11 +4,11 @@ from __future__ import annotations
 import streamlit as st
 
 from services.filters import apply_filters
-from ui_helpers.record_block import render_record_block
+from ui_helpers.blocks import render_record_block
 
 def render_watercal_dashboard(wcal_ds, rig_filter, recent_days) -> None:
 
-    st.title("💧 Water Calibrations (standalone)")
+    st.title("💦 Water Calibrations")
 
     if not wcal_ds.records:
         st.info("No standalone water calibration files found.")

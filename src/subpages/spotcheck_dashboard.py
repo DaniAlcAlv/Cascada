@@ -7,12 +7,12 @@ import pandas as pd
 import streamlit as st
 
 from config import STRIKE_MARGIN, OK_MARGIN
-from ui_helpers.record_block import fig_to_png  # you exposed fig_to_png here
+from ui_helpers.blocks import fig_to_png  
 
 
 
 def render_spotcheck_dashboard(df:pd.DataFrame, rig_filter:str, recent_days: int):
-    st.title("🔎 Spotcheck")
+    st.title("💧 Spotcheck")
 
     # 1) Load the DataFrame (do NOT format dates before filtering)
     df_work = df.copy()
@@ -142,10 +142,12 @@ def render_spotcheck_dashboard(df:pd.DataFrame, rig_filter:str, recent_days: int
     ax = plot1.add_subplot(111)
 
     # Color by strike status
-    colors = g["O) Strike?"].map({True: "#E67E22", False: "#1B773E"})
+    g["color"] = g["O) OK?"].map({True: "#0d7200", False: "#FF0000"})
+    g.loc[g["O) Strike?"] == True, "color"] = "#ffa600"
+
     ax.scatter(
         g["days_since_cal"], g["ratio_pct"],
-        c=colors, s=45, edgecolor="white", linewidth=0.6, alpha=0.95, zorder=3
+        c=g["color"], s=45, edgecolor="white", linewidth=0.6, alpha=0.95, zorder=3
     )
 
     # Reference lines: OK ±, Strike ±, and 100%

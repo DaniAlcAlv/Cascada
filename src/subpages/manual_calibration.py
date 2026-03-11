@@ -1,6 +1,5 @@
 from datetime import datetime, timezone
 from typing import List
-from pathlib import Path
 import streamlit as st
 
 from models.watercal_model import (
@@ -11,17 +10,17 @@ from models.watercal_model import (
 )
 from models.watercal_dataset import WaterCalDataset
 
-from ui_helpers.record_block import fig_to_png
+from services.cache import fig_to_png
 
 
 def render_manual_calibration(rig_ds:WaterCalDataset, rig_filter:str):
     st.set_page_config(
-        page_title="🧪 Manual Calibration",
+        page_title="✍️ Manual Calibration",
         layout="wide",
         initial_sidebar_state="expanded",
     )
 
-    st.title("🧪 Manual Calibration")
+    st.title("✍️ Manual Calibration")
 
     # Require a specific rig from the sidebar filter
     if rig_filter == "All":

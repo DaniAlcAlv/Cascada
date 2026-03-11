@@ -7,9 +7,9 @@ import streamlit as st
 from models.watercal_model import WaterCalRecord
 from models.watercal_dataset import WaterCalDataset
 
-from ui_helpers.record_block import render_record_block
+from ui_helpers.blocks import render_record_block
 from services.filters import apply_filters
-from services.dataset_loader import load_datasets
+from services.dataset_loader import reload_datasets
 
 
 def render_rig_dashboard(rig_ds:WaterCalDataset, wcal_ds: WaterCalDataset, rig_filter:str, recent_days:int):
@@ -88,7 +88,7 @@ def render_rig_dashboard(rig_ds:WaterCalDataset, wcal_ds: WaterCalDataset, rig_f
                         )
                         
                         st.success(f"Updated: `{written_path}`")
-                        load_datasets() # Reload rig dataset so UI reflects updated file
+                        reload_datasets() # Reload rig dataset so UI reflects updated file
 
                     except Exception as e:
                         st.error(f"Failed to update rig schema: {e}")
