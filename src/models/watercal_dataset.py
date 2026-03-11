@@ -53,6 +53,7 @@ class WaterCalDataset:
         # Expect main_dir/<computer>/*.json
         for comp_dir in sorted(p for p in main_dir.iterdir() if p.is_dir()):
             for rig_json_path in sorted(comp_dir.glob("*.json")):
+                logger.debug("Loading rig metadata from ", rig_json_path)
                 try:
                     with rig_json_path.open("r", encoding="utf-8") as f:
                         raw = json.load(f)
@@ -111,6 +112,7 @@ class WaterCalDataset:
         wc_files = sorted(main_dir.rglob("water_calibration.json"))
 
         for wc_path in wc_files:
+            logger.debug("Loading automatic calibration file", wc_path)
             try:
                 # Load the water_calibration payload
                 with wc_path.open("r", encoding="utf-8") as f:
@@ -146,9 +148,8 @@ class WaterCalDataset:
 
 
         old_wc_files = sorted(main_dir.rglob("*water_valve_calibration*.json"))
-        print(main_dir," - ", old_wc_files)
         for old_wc_path in old_wc_files:
-            print("loading old file", old_wc_path)
+            logger.debug("Loading old file", old_wc_path)
             try:
                 # Load the water_calibration payload
                 with old_wc_path.open("r", encoding="utf-8") as f:
