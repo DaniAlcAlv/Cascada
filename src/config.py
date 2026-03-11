@@ -1,7 +1,7 @@
 # config.py
 
-RIG_DIR_DEFAULT       = r"C:\Data\Rig jsons 2026-2-19"
-WATERCAL_DIR_DEFAULT  = r"C:\Data\Water-cal"
+RIG_DIR_DEFAULT       = r"C:\Data\Rig post 3-10-2026"
+WATERCAL_DIR_DEFAULT  = r"C:\Data\Water-cal-2026"
 SPOTCHECK_DIR_DEFAULT = r"C:\Data\SpotCheck"
 
 OK_MARGIN = 10.0

@@ -148,7 +148,7 @@ def write_corrected_for_all_without_recalc(root: Path | str, *, rewrite: bool = 
 
 if __name__ == "__main__":
     # Example CLI-ish invocation:
-    root = r"C:\Data\water-cal-2026\water_calibration\automatic_water_calibration"  
+    root = r"F:\Data\water-cal-2026\water_calibration\automatic_water_calibration\13A_2026-03-10T053555Z"  
     results = write_corrected_for_all_without_recalc(root, rewrite=True)
     for r in results:
         print(r)
