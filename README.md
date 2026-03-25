@@ -1,4 +1,4 @@
-# 🛠 CaSCaDA: Calibration and Spot Check and Dashboard Assitant
+# 🛠 CASCADA: Calibration and Spot Check and Dashboard Assitant
 
 A toolkit to load, validate, visualize, create, and update **Water Valve Calibrations** and **Spotchecks** used in VR foraging rigs.
 
@@ -11,16 +11,17 @@ A toolkit to load, validate, visualize, create, and update **Water Valve Calibra
 
 
 ## 📁 Project Structure
+```
 src/  
 │  
-├─ CaSCaDa.py                 # Streamlit entrypoint  
+├─ cascada.py                 # Streamlit entrypoint  
 │  
 ├─ config.py                  # Default paths and constants  
 │  
-├── models
-│   ├── watercal_model.py     # Calibration models and regression logic  
-│   ├── watercal_dataset.py   # Dataset loader and record indexing  
-│   └── spotcheck_model.py    # Spotcheck models and dataframe loader  
+├── models  
+│   ├── watercal_model.py     # Calibration model validation and regression logic  
+│   ├── watercal_dataset.py   # Calibration dataset loader and record indexing  
+│   └── spotcheck_model.py    # Spotcheck models and loader  
 │  
 ├── services/                  
 │   ├── cache.py              # Streamlit caching helpers  
@@ -28,7 +29,7 @@ src/
 │   └── plotting.py           # Matplotlib → PNG conversion  
 │   
 ├─ ui/      
-│   ├─ filters.py             # Sidebar filters  
+│   ├─ filters.py             # Filters  
 │   └─ blocks.py              # Streamlit expanders  
 │  
 ├─ subpages/                  # Streamlit pages 
@@ -41,6 +42,7 @@ src/
 ├─ PyGUI.py                   # Terminal interface  
 │  
 └─ extras/                    # Other scripts
+```
 
 ## 📦 Supported WaterCal Data Layouts
 ### Automatic Calibration
