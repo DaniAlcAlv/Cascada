@@ -2,20 +2,17 @@
 # To run> streamlit run src/cascada.py --server.port 8501 --server.address 0.0.0.0
 
 from __future__ import annotations
-import logging
 import streamlit as st
 import pandas as pd #Only for Typehints
 
 from services.filesystem import find_repo_root
 from models.watercal_dataset import WaterCalDataset
 from ui.blocks import show_skipped_files
+from services.logger import get_logger
 
 def show_launcher(rig_ds: WaterCalDataset, wcal_ds: WaterCalDataset, spotcheck_df: pd.DataFrame, spotcheck_path:str, page_options: list) -> None:
-
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s %(levelname)s [%(name)s] %(message)s",
-    )
+    # ---- Logging ----
+    get_logger()
 
     # ---- Main title ----
     t1, t2 = st.columns([1, 2], vertical_alignment='bottom', border=False) 

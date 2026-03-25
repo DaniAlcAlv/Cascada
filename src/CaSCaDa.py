@@ -2,8 +2,6 @@
 # To run> streamlit run src/cascada.py --server.port 8501 --server.address 0.0.0.0
 from __future__ import annotations
 
-import logging
-
 import streamlit as st
 
 from config import *
@@ -18,13 +16,9 @@ from subpages.new_spotcheck import render_new_spotcheck
 from subpages.manual_calibration import render_manual_calibration
 from subpages.launcher import show_launcher
 
-# ----------- Page Config & Logging -----------
+# ----------- Page Config  -----------
 set_page_config("CaSCaDa")
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s %(levelname)s [%(name)s] %(message)s",
-)
 
 # ===================== Sidebar Controls & Page Navigation =====================
 # Page selector
