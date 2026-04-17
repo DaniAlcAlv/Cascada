@@ -54,6 +54,10 @@ def render_new_spotcheck(rig_ds:WaterCalDataset, spotcheck_path:Path|str, rig_fi
         png = fig_to_png(fig, cache_key=cache_key)    
         st.image(png, width="stretch")
 
+    # Step 0.1: Warnings and errors on the selected calibration file
+    if rec.errors or len(rec.warnings) > 4:
+        st.error(f"Selected calibration has {len(rec.errors)} error(s) and {len(rec.warnings)} warning(s). Update the calibration before proceeding.")   
+    
     # Step 1: target + bands
     c1, c2, c3 = st.columns([1, 1, 1])
     with c1:
@@ -76,7 +80,7 @@ def render_new_spotcheck(rig_ds:WaterCalDataset, spotcheck_path:Path|str, rig_fi
                     f"({low_ul:.0f}–{high_ul:.0f} µL)."
                 )
             rec_ms = rec.calc_milliseconds_from_microliters(target_ul)
-            st.metric(label="Valve open time (ms)", value=f"{rec_ms:.2f}")
+            st.metric(label="Valve open time (ms)", value=f"{rec_ms:.0f}")
         except Exception as e:
             rec_ms = 0.0
             st.error(f"Could not compute open time: {e}")
