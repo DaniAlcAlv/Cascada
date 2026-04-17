@@ -15,7 +15,7 @@ dependencies = [
     "matplotlib",
     "seaborn",
     "scikit-learn",
-    "pydantic"
+    "pydantic",
     "streamlit"
 ]
 
